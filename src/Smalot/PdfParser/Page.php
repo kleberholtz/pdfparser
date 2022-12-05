@@ -205,7 +205,16 @@ class Page extends PDFObject
                 $new_content = '';
 
                 foreach ($contents->getContent() as $content) {
-                    $new_content .= $content->getContent()."\n";
+                    // Skip error: Call to a member function getContent() on null in file
+                    try {
+                        $new_content .= $content->getContent() . "\n";
+                    } catch (\Exception $e) {
+                        // ignore
+                    } catch (\Error $e) {
+                        // ignore
+                    } catch (\Throwable $e) {
+                        // ignore
+                    }
                 }
 
                 $header = new Header([], $this->document);
